@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+   <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+ 
+  </head>
+  <body>
+      {% load crispy_forms_tags %}
+
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand mx-auto" href="{% url 'homepage' %}">
+          Contacts Database
+        </a>
+        <a class="navbar-brand mx-auto" href="{% url 'search_name' %}">
+          Search By Name and Telephone number
+        </a>
+        <a class="navbar-brand mx-auto" href="{% url 'search_profession' %}">
+          Search By profession
+        </a>
+        <a class="navbar-brand mx-auto" href="{% url 'compare_name' %}">
+          Compare
+        </a>
+      </nav>
+      <br><br>
+
+      {% block content %}
+      <center>
+        <form class="d-flex" method=POST action="{% url 'compare_name' %}">
+          {% csrf_token %}
+          <input class="form-control me-2" type="search" placeholder="First Name" aria-label="Search" name="compared">
+          <input class="form-control me-2" type="search" placeholder="Second Name" aria-label="Search" name="compared2">
+          <button class="btn btn-outline-secondary" type="submit">Compare</button>
+        </form>
+        {% if compared  %}
+          <h1> Result:</h1>
+          <br/>
+          {% for contact in contacts %}
+          {{contact.name}}
+          {{contact.profession}}
+          {{contact.mobile_number}}
+          {{contact.tel_number}}
+          <br/>
+          {% for contact2 in contacts2 %}
+          <br/>
+          {{contact2.name}}
+          {{contact2.profession}}
+          {{contact2.mobile_number}}
+          {{contact2.tel_number}}
+          <br/>
+          {% if contact.profession == contact2.profession  %}{% if contact.tel_number == contact2.tel_number  %}{% if contact.mobile_number == contact2.mobile_number  %}
+
+            true
+            {% else %}
+            false
+            {% endif %}
+            {% else %}
+            false
+            {% endif %}
+            {% else %}
+            false
+            {% endif %}
+          
+            
+          {% endfor %}
+          {% endfor %}
+
+        {% else %}
+        <h1> You forgot to Compare.. ! </h1>
+        {% endif %}
+
+    
+      </center>
+      {% endblock %}
+
+      
+
+  </body>
+</html>

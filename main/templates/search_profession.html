@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+   <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+ 
+  </head>
+  <body>
+      {% load crispy_forms_tags %}
+
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand mx-auto" href="{% url 'homepage' %}">
+          Contacts Database
+        </a>
+        <a class="navbar-brand mx-auto" href="{% url 'search_name' %}">
+          Search By Name and Telephone number
+        </a>
+        <a class="navbar-brand mx-auto" href="{% url 'search_profession' %}">
+          Search By profession
+        </a>
+        <a class="navbar-brand mx-auto" href="{% url 'compare_name' %}">
+          Compare
+        </a>
+      </nav>
+      <br><br>
+
+      {% block content %}
+      <center>
+        <form class="d-flex" method=POST action="{% url 'search_profession' %}">
+          {% csrf_token %}
+          <input class="form-control me-2" type="search" placeholder="Search by Profession" aria-label="Search" name="searched">
+          <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </form>
+        {% if searched %}
+          <h1> You searched for Profession:{{contact.profession}}</h1>
+          <br/>
+          {% for contact in contacts %}
+            Name : {{ contact }}  <br/>
+            Profession : {{contact.profession}} <br/>
+            Mobile Number: {{contact.mobile_number}}<br/>
+            Tel Number: {{contact.tel_number}}<br/>
+            address: {{contact.address}}<br/>
+            <br/>
+          {% endfor %}
+
+        {% else %}
+        <h1> You forgot to Search.. ! </h1>
+        {% endif %}
+      </center>
+      {% endblock %}
+
+      
+
+  </body>
+</html>
